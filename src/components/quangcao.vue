@@ -1,4 +1,5 @@
 <template>
+  <div class="container-fluid">
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
         <li v-for="(slide, index) in banners" :key="index" :data-target="'#carouselExampleIndicators'" :data-slide-to="index" :class="{ active: index === 0 }"></li>
@@ -17,6 +18,7 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+  </div>
   </template>
   
   <script>
@@ -36,7 +38,7 @@
   
   <style scoped>
   .carousel-item img {
-    max-height: 500px; /* Adjust the height as needed */
+    max-height: 550px; /* Adjust the height as needed */
     object-fit: cover;
   }
   </style>
