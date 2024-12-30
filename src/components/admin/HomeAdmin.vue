@@ -10,12 +10,13 @@
       </div>
       <nav class="sidebar-nav">
         <ul>
-          <li><a href="/admin/product">Danh sách sản phẩm</a></li>
-          <li><a href="/admin/users">Danh sách Users</a></li>
-          <li><a href="/admin/blogs">Danh sách Blogs</a></li>
-          <li><a href="/admin/">Quản lý đơn hàng</a></li>
-          <li><a href="/admin/">Phân tích</a></li>
-          <li><a href="/">Logout</a></li>
+          <li><a href="/admin/product">Sản phẩm</a></li>
+          <li><a href="/admin/users">Người dùng</a></li>
+          <li><a href="/admin/blogs">Blogs</a></li>
+          <li><a href="/admin/orders">Đơn hàng</a></li>
+          <li><a href="/admin/categorys">Category</a></li>
+          <li><a href="/admin/comments">Comment</a></li>
+          <li><a href="/" @click="logout">Logout</a></li>
         </ul>
       </nav>
     </div>
@@ -24,12 +25,12 @@
       <header class="header d-flex justify-content-between align-items-center p-3">
         <div class="menu">
           <!-- Button only visible on mobile to toggle sidebar -->
-          <button class="btn btn-secondary" @click="toggleSidebar">Menu</button>
-          <input type="text" class="form-control" placeholder="Search...">
+          <button class="btn btn-primary" @click="toggleSidebar">☰ Menu</button>
+          <input type="text" class="form-control" placeholder="Tìm kiếm...">
         </div>
         <div class="admin-info d-flex align-items-center">
-          <img src="https://via.placeholder.com/40" alt="Admin" class="rounded-circle">
-          <span class="ml-2">Admin Name</span>
+          
+          <span class="ml-2">Admin</span>
         </div>
       </header>
 
@@ -51,6 +52,11 @@ export default {
   methods: {
     toggleSidebar() {
       this.isSidebar = !this.isSidebar;
+    },
+    logout() {
+      // Log out logic here, maybe remove token or redirect
+      localStorage.removeItem('token');
+      this.$router.push('/login');
     }
   },
 }
@@ -60,14 +66,15 @@ export default {
 .admin-dashboard {
   display: flex;
   height: 100vh;
-  background-color: #ffff;
-  color: black;
+  background-color: #f4f4f9;
+  color: #333;
   position: relative;
+  margin: 0;
 }
 
 .sidebar {
-  width: 300px;
-  background-color: #2c2c3e;
+  width: 260px;
+  background-color: #4CAF50; /* Sử dụng màu tươi sáng */
   padding: 20px;
   transition: transform 0.3s ease;
   transform: translateX(-100%);
@@ -76,6 +83,7 @@ export default {
   left: 0;
   height: 100%;
   z-index: 1000;
+  border-right: 1px solid #ddd;
 }
 
 .show-sidebar {
@@ -88,7 +96,7 @@ export default {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   z-index: 999;
 }
 
@@ -97,22 +105,26 @@ export default {
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
+  padding-left: 20px;
 }
 
-/* Sidebar navigation items */
 .sidebar-nav li {
-  display: flex;
-  background-color: #ffffff;
-  justify-content: flex-start;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  text-align: left;
-  margin: 10px 0;
+  list-style: none;
+  margin: 15px 0;
 }
 
 .sidebar-nav li a {
-  padding: 10px 20px;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #66bb6a;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.sidebar-nav li a:hover {
+  background-color: #388e3c;
 }
 
 .menu {
@@ -120,30 +132,74 @@ export default {
   align-items: center;
 }
 
+.menu button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.menu button:hover {
+  background-color: #388e3c;
+}
+
+.header {
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+}
+
+.admin-info img {
+  border-radius: 50%;
+}
+
+.admin-info span {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.form-control {
+  width: 250px;
+  border-radius: 4px;
+}
+
 @media (min-width: 768px) {
-  
   .menu button {
     display: none;
   }
-  /* Sidebar always visible on larger screens */
+
   .sidebar {
     transform: translateX(0);
     position: static;
   }
+
   .overlay {
     display: none;
   }
+
+  
 }
+
 @media (max-width: 768px) {
-  .main-content{
+  .main-content {
     width: 100%;
   }
+
+  .sidebar-nav li a {
+    font-size: 14px;
+  }
+
   .container-fluid {
     width: 100%;
     margin: 0;
     padding: 0;
   }
- 
 }
 
 </style>

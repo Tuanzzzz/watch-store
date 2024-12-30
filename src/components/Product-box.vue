@@ -1,138 +1,98 @@
 <template>
-    <div class="container my-4">
-      <div :id="carouselId" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div
-            v-for="(group, groupIndex) in groupedItems"
-            :key="groupIndex"
-            :class="['carousel-item', { active: groupIndex === 0 }]"
-          >
-            <div class="row">
-              <ProductItem
-                v-for="(item, index) in group"
-                :key="index"
-                :imgSrc="item.imgSrc"
-                :name="item.name"
-                :price="item.price"
-                :oldPrice="item.oldPrice"
-                :discount="item.discount"
-                :rating="item.rating"
-                class="col-6 col-md-3"
-              />
-            </div>
+  <div class="container">
+    <div :id="carouselId" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div
+          v-for="(group, groupIndex) in groupedItems"
+          :key="groupIndex"
+          :class="['carousel-item', { active: groupIndex === 0 }]"
+        >
+          <div class="row">
+            <ProductItem
+              v-for="(item, index) in group"
+              :key="index"
+              :id="item.id"
+              :imgSrc="item.image"
+              :name="item.name"
+              :price="item.price"
+              :oldPrice="item.oldPrice"
+              :discount="item.discount"
+              :rating="item.rating"
+              class="col-6 col-md-3"
+            >
+              <!-- Bọc sản phẩm trong một router-link -->
+              <router-link :to="`/products/${item.id}`" class="stretched-link"></router-link>
+            </ProductItem>
           </div>
         </div>
-        <a class="carousel-control-prev" :href="'#' + carouselId" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" :href="'#' + carouselId" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
       </div>
+      <a class="carousel-control-prev" :href="'#' + carouselId" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" :href="'#' + carouselId" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
     </div>
-  </template>
-  
-  
-  <script>
-  import ProductItem from './product-item.vue';
-  
-  export default {
-    name: 'ProductBox',
-    components: {
-      ProductItem
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import ProductItem from './product-item.vue';
+
+export default {
+  name: 'ProductBox',
+  components: {
+    ProductItem,
+  },
+  props: {
+    carouselId: {
+      type: String,
+      required: true,
     },
-    props:{
-        carouselId:{
-            type: String,
-            required: true
-        }
+    startIndex: {
+      type: Number,
+      required: true,
     },
-    data() {
-      return {
-        items: [
-          {
-            imgSrc: '1.jpeg',
-            name: 'Product 1',
-            price: '100.000',
-            oldPrice: '200.000',
-            discount: '50%',
-            rating: 4
-          },
-          {
-            imgSrc: '2.jpeg',
-            name: 'Product 2',
-            price: '200.000',
-            oldPrice: '300.000',
-            discount: '30%',
-            rating: 3
-          },
-          {
-            imgSrc: '3.jpeg',
-            name: 'Product 3',
-            price: '300.000',
-            oldPrice: '400.000',
-            discount: '25%',
-            rating: 5
-          },
-          {
-            imgSrc: '4.jpeg',
-            name: 'Product 4',
-            price: '400.000',
-            oldPrice: '500.000',
-            discount: '20%',
-            rating: 2
-          },
-          {
-            imgSrc: '5.jpeg',
-            name: 'Product 5',
-            price: '500.000',
-            oldPrice: '600.000',
-            discount: '15%',
-            rating: 4
-          },
-          {
-            imgSrc: '6.jpeg',
-            name: 'Product 6',
-            price: '600.000',
-            oldPrice: '700.000',
-            discount: '10%',
-            rating: 3
-          },
-          {
-            imgSrc: '7.jpeg',
-            name: 'Product 7',
-            price: '700.000',
-            oldPrice: '800.000',
-            discount: '5%',
-            rating: 5
-          },
-          {
-            imgSrc: '8.jpeg',
-            name: 'Product 8',
-            price: '800.000',
-            oldPrice: '900.000',
-            discount: '2%',
-            rating: 2
-          }
-        ]
-      };
+    endIndex: {
+      type: Number,
+      required: true,
     },
-    computed: {
-      groupedItems() {
-        const chunkSize = 4;
-        const groups = [];
-        for (let i = 0; i < this.items.length; i += chunkSize) {
-          groups.push(this.items.slice(i, i + chunkSize));
-        }
-        return groups;
+  },
+  data() {
+    return {
+      items: [], // Dữ liệu sản phẩm sẽ được lấy từ API
+    };
+  },
+  computed: {
+    groupedItems() {
+      const chunkSize = 4; // Mỗi nhóm sẽ chứa 4 sản phẩm
+      const groups = [];
+      for (let i = 0; i < this.items.length; i += chunkSize) {
+        groups.push(this.items.slice(i, i + chunkSize));
       }
-    }
-  };
-  </script>
-  
-<style>
+      return groups;
+    },
+  },
+  created() {
+    this.fetchProducts(); // Gọi API khi component được tạo
+  },
+  methods: {
+    async fetchProducts() {
+      try {
+        const response = await axios.get('http://localhost:8388/products'); // Địa chỉ API để lấy sản phẩm
+        this.items = response.data.slice(this.startIndex, this.endIndex); // Lấy sản phẩm từ startIndex đến endIndex
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
 .product-card {
   border: 1px solid #ddd;
   padding: 15px;
@@ -184,6 +144,7 @@
   color: orange;
   margin-top: 10px;
 }
+
 .carousel-control-prev,
 .carousel-control-next {
   background-color: #333;
@@ -196,5 +157,4 @@
   opacity: 1; /* Đảm bảo nút không bị mờ */
   top: 50%;
 }
-
-  </style>
+</style>

@@ -1,165 +1,171 @@
 <template>
-    <div class="container">
-      <!-- Pills navs -->
-      <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" :class="{ active: activeTab === 'login' }" @click="activeTab = 'login'" id="tab-login" href="#pills-login" role="tab"
-            aria-controls="pills-login" aria-selected="true">Login</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" :class="{ active: activeTab === 'register' }" @click="activeTab = 'register'" id="tab-register" href="#pills-register" role="tab"
-            aria-controls="pills-register" aria-selected="false">Register</a>
-        </li>
-      </ul>
-      <!-- Pills navs -->
-  
-      <!-- Pills content -->
-      <div class="tab-content">
-        <div class="tab-pane fade" :class="{ 'show active': activeTab === 'login' }" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-          <form>
-            <div class="text-center mb-3">
-              <p>Sign in with:</p>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-  
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-google"></i>
-              </button>
-  
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-              </button>
-  
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-github"></i>
-              </button>
-            </div>
-  
-            <p class="text-center">or:</p>
-  
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <input type="email" id="loginName" class="form-control" />
-              <label class="form-label" for="loginName">Email or username</label>
-            </div>
-  
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-              <input type="password" id="loginPassword" class="form-control" />
-              <label class="form-label" for="loginPassword">Password</label>
-            </div>
-  
-            <!-- 2 column grid layout -->
-            <div class="row mb-4">
-              <div class="col-md-6 d-flex justify-content-center">
-                <!-- Checkbox -->
-                <div class="form-check mb-3 mb-md-0">
-                  <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-                  <label class="form-check-label" for="loginCheck"> Remember me </label>
+  <div class="container-fluid">
+    <h2 v-if="isLoginMode">Đăng nhập</h2>
+    <h2 v-else>Tạo tài khoản</h2>
+
+    <!-- Login Form -->
+    <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ isLoginMode ? "Đăng nhập" : "Tạo tài khoản" }}</h5>
+            <button type="button" class="close" @click="toggleLoginForm" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent="isLoginMode ? login() : register()">
+              <!-- Đăng nhập -->
+              <div v-if="isLoginMode">
+                <div class="form-group">
+                  <label for="username">Tên đăng nhập:</label>
+                  <input type="text" v-model="loginData.username" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Mật khẩu:</label>
+                  <input type="password" v-model="loginData.password" id="password" class="form-control" required>
                 </div>
               </div>
-  
-              <div class="col-md-6 d-flex justify-content-center">
-                <!-- Simple link -->
-                <a href="#!">Forgot password?</a>
+
+              <!-- Tạo tài khoản -->
+              <div v-else>
+                <div class="form-group">
+                  <label for="username">Tên đăng nhập:</label>
+                  <input type="text" v-model="registerData.username" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Mật khẩu:</label>
+                  <input type="password" v-model="registerData.password" id="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="ten">Tên:</label>
+                  <input type="text" v-model="registerData.ten" id="ten" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="gioiTinh">Giới tính:</label>
+                  <select v-model="registerData.gioiTinh" id="gioiTinh" class="form-control">
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="diaChi">Địa chỉ:</label>
+                  <input type="text" v-model="registerData.diaChi" id="diaChi" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="ngaySinh">Ngày sinh:</label>
+                  <input type="date" v-model="registerData.ngaySinh" id="ngaySinh" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="sdt">Số điện thoại:</label>
+                  <input type="text" v-model="registerData.sdt" id="sdt" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email:</label>
+                  <input type="email" v-model="registerData.email" id="email" class="form-control" required>
+                </div>
               </div>
-            </div>
-  
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
-  
-            <!-- Register buttons -->
-           
-          </form>
-        </div>
-        <div class="tab-pane fade" :class="{ 'show active': activeTab === 'register' }" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-          <form>
-            <div class="text-center mb-3">
-              <p>Sign up with:</p>
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-facebook-f"></i>
-              </button>
-  
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-google"></i>
-              </button>
-  
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-twitter"></i>
-              </button>
-  
-              <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fab fa-github"></i>
-              </button>
-            </div>
-  
-            <p class="text-center">or:</p>
-  
-            <!-- Name input -->
-            <div class="form-outline mb-4">
-              <input type="text" id="registerName" class="form-control" />
-              <label class="form-label" for="registerName">Name</label>
-            </div>
-  
-            <!-- Username input -->
-            <div class="form-outline mb-4">
-              <input type="text" id="registerUsername" class="form-control" />
-              <label class="form-label" for="registerUsername">Username</label>
-            </div>
-  
-            <!-- Email input -->
-            <div class="form-outline mb-4">
-              <input type="email" id="registerEmail" class="form-control" />
-              <label class="form-label" for="registerEmail">Email</label>
-            </div>
-  
-            <!-- Password input -->
-            <div class="form-outline mb-4">
-              <input type="password" id="registerPassword" class="form-control" />
-              <label class="form-label" for="registerPassword">Password</label>
-            </div>
-  
-            <!-- Repeat Password input -->
-            <div class="form-outline mb-4">
-              <input type="password" id="registerRepeatPassword" class="form-control" />
-              <label class="form-label" for="registerRepeatPassword">Repeat password</label>
-            </div>
-  
-            <!-- Checkbox -->
-            <div class="form-check d-flex justify-content-center mb-4">
-              <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
-                aria-describedby="registerCheckHelpText" />
-              <label class="form-check-label" for="registerCheck">
-                I have read and agree to the terms
-              </label>
-            </div>
-  
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-3">Sign up</button>
-          </form>
+
+              <button type="submit" class="btn btn-primary">{{ isLoginMode ? "Đăng nhập" : "Tạo tài khoản" }}</button>
+              <div v-if="errorMessage" class="alert alert-danger mt-3">{{ errorMessage }}</div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link" @click="toggleMode">
+              {{ isLoginMode ? "Chưa có tài khoản? Tạo tài khoản" : "Đã có tài khoản? Đăng nhập" }}
+            </button>
+          </div>
         </div>
       </div>
-      <!-- Pills content -->
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: 'Login',
-    data() {
-      return {
-        activeTab: 'login'
+    <div v-if="showLoginForm" class="modal-backdrop fade show"></div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+export default {
+  name: "Login",
+  data() {
+    return {
+      isLoginMode: true, // Chuyển đổi giữa Đăng nhập và Tạo tài khoản
+      showLoginForm: true,
+      loginData: {
+        username: "",
+        password: ""
+      },
+      registerData: {
+        username: "",
+        password: "",
+        ten: "",
+        gioiTinh: "Nam",
+        diaChi: "",
+        ngaySinh: "",
+        sdt: "",
+        email: ""
+      },
+      errorMessage: ""
+    };
+  },
+  methods: {
+    toggleMode() {
+      this.isLoginMode = !this.isLoginMode;
+    },
+    toggleLoginForm() {
+      this.showLoginForm = !this.showLoginForm;
+    },
+    async login() {
+      try {
+        const response = await axios.post("http://localhost:8388/auth/token", this.loginData);
+
+        if (response.status !== 200) throw new Error("Đăng nhập không thành công.");
+
+        const token = response.data.result.token;
+        localStorage.setItem("token", token);
+
+        const introspectResponse = await axios.post("http://localhost:8388/auth/introspect", { token });
+        if (!introspectResponse.data.result.valid) throw new Error("Token không hợp lệ.");
+
+        const roles = introspectResponse.data.result.roles;
+        if (roles.includes("ADMIN")) this.$router.push("/admin");
+        else if (roles.includes("USER")) this.$router.push("/user");
+        else throw new Error("Sai tài khoản.");
+      } catch (error) {
+        this.errorMessage = error.message || "Đã có lỗi xảy ra.";
+      }
+    },
+    async register() {
+      try {
+        const response = await axios.post("http://localhost:8388/users", this.registerData);
+
+        if (response.status !== 201) throw new Error("Tạo tài khoản không thành công.");
+
+        const token = response.data.result.token;
+        localStorage.setItem("token", token);
+        this.isLoginMode = true; // Quay về form đăng nhập
+      } catch (error) {
+        this.errorMessage = error.message || "Đã có lỗi xảy ra.";
       }
     }
   }
-  </script>
-  
-  <style>
-  .container {
-    width: 1024px;
-  }
-  .form-check-input{
-    position: none;
-  }
-  </style>
+};
+</script>
+
+<style scoped>
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+.modal-content {
+  max-width: 400px;
+  max-height: calc(80vh - 40px); /* Để khoảng trống phía trên và dưới */
+  overflow-y: auto; /* Cho phép cuộn nếu nội dung vượt quá chiều cao */
+  margin: 20px auto; /* Khoảng cách phía trên và dưới modal */
+}
+</style>

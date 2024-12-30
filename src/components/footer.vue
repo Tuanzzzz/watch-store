@@ -31,7 +31,7 @@
           </div>
         </div>
         <div class="footer-bottom">
-          &copy; 2023 Your Company. All rights reserved.
+          &copy; 2024 Watch Store. All rights reserved.
         </div>
       </div>
     </footer>

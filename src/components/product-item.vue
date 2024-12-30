@@ -1,20 +1,20 @@
 <template>
   <div class="product-item">
-    <a href="product">
+    <router-link :to="`/products/${id}`">
       <div class="product-card">
         <img :src="imgSrc" alt="Product">
         <p class="name">{{ name }}</p>
-        <p class="price">{{ price }}</p>
+        <p class="price">{{ formatPrice(price) }}</p>
         <div class="price-origin">
-          <p class="old-price">{{ oldPrice }}</p>
-          <p class="discount">{{ discount }}</p>
+          <p class="old-price" v-if="oldPrice">{{ formatPrice(oldPrice) }}</p>
+          <p class="discount" v-if="discount">{{ discount }}</p>
         </div>
         <div class="stars">
           <span v-for="(filled, index) in getStars(rating)" :key="index" class="fa fa-star" :class="{'checked': filled}"></span>
         </div>
-        <button class="addCart" @click="addToCart" >Add Cart</button>
+        <button class="addCart" @click.stop="addToCart">Thêm vào giỏ hàng</button>
       </div>
-    </a>
+    </router-link>
   </div>
 </template>
 
@@ -22,73 +22,85 @@
 export default {
   name: 'ProductItem',
   props: {
+    id: {
+      type: String,
+      required: true,
+    },
     imgSrc: {
       type: String,
-      required: true
+      required: true,
     },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     price: {
       type: String,
-      required: true
+      required: true,
     },
     oldPrice: {
       type: String,
-      required: false
+      required: false,
     },
     discount: {
       type: String,
-      required: false
+      required: false,
     },
     rating: {
       type: Number,
-      required: false
-    }
+      required: false,
+    },
   },
   methods: {
     getStars(rating) {
       return Array.from({ length: 5 }, (_, index) => index < rating);
     },
     addToCart() {
-      const product = {
-        id: 'FC-310MS5B6',
-        name: 'Frederique Constant ',
-        price: 32793000,
-        brand: 'Frederique',
-        quantity: 1
-      };
-      localStorage.setItem('cart', JSON.stringify(product));
-    },
-    loadCart() {
-      const cart = localStorage.getItem('cart');
-      if (cart) {
-        this.cartItems = JSON.parse(cart);
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingProduct = cart.find(item => item.id === this.id);
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+      } else {
+        cart.push({
+          id: this.id,
+          name: this.name,
+          price: this.price,
+          imgSrc: this.imgSrc,
+          quantity: 1,
+        });
       }
-    }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Đã thêm vào giỏ hàng!');
+    },
+    formatPrice(price) {
+      return new Intl.NumberFormat('vi-VN', {
+        style: 'currency',
+        currency: 'VND',
+      }).format(price);
+    },
   },
-  created() {
-    this.loadCart();
-  }
-  
-}
+};
 </script>
 
 <style scoped>
-
-
 .product-card {
-  
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 5px;
   text-align: center;
   justify-items: center;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
-.product-card p{
+
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.product-card p {
   text-decoration: none;
 }
+
 .product-card img {
   width: 200px;
   height: 200px;
@@ -127,16 +139,23 @@ export default {
 }
 
 .fa-star {
-
   color: #ccc; /* Màu sao mặc định */
 }
 
 .checked {
   color: orange; /* Màu sao khi được đánh giá */
 }
-.addCart{
+
+.addCart {
   margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
+.addCart:hover {
+  background-color: #0056b3;
+}
 </style>
-

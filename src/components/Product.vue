@@ -1,5 +1,5 @@
 <template>
-    <div class="product">
+    <div class="user/product">
       <h2>
         Products
       </h2>

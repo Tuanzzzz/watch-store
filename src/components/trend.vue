@@ -1,13 +1,13 @@
 <template>
     <div class="container my-4">
-    <h2 class="text-center mb-4">Chon dong ho phu hop</h2>
+    <h2 class="text-center mb-4">CHỌN ĐỒNG HỒ PHÙ HỢP</h2>
     <div class="row">
         <!-- Product 1 -->
         
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-xu-huong-2024_1725589299.jpg" alt="Product 1">
                     <p class="name">Xu hướng 2024</p>
                 
                 </div>
@@ -16,7 +16,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-baby-g_1725596682.jpg" alt="Product 1">
                     <p class="name">Baby cá tính</p>
                 
                 </div>
@@ -25,7 +25,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-g-shock_1725589299.jpg" alt="Product 1">
                     <p class="name">G-Shock thể thao</p>
                 
                 </div>
@@ -34,7 +34,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-quan-doi_1725598290.jpg" alt="Product 1">
                     <p class="name">Quân đội</p>
                 
                 </div>
@@ -43,7 +43,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-tissot_1725589299.jpg" alt="Product 1">
                     <p class="name">Tissot sang trọng</p>
                 
                 </div>
@@ -52,7 +52,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-casio-ltp_1725589299.jpg" alt="Product 1">
                     <p class="name">Casio nữ tính</p>
                 
                 </div>
@@ -61,7 +61,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-casio-mtp_1725589299.jpg" alt="Product 1">
                     <p class="name">Casio thanh lịch</p>
                 
                 </div>
@@ -70,7 +70,7 @@
         <div class="col-6 col-md-3">
             <a href="/productList">
                 <div class="product-card">
-                    <img src="trend1.jpg" alt="Product 1">
+                    <img src="https://www.watchstore.vn/images/collections_home/2024/09/06/resized/small-web-banner-giong-rolex_1725589710.jpg" alt="Product 1">
                     <p class="name">Giống Rolex</p>
                 
                 </div>
